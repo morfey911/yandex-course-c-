@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "container:whilte belt"
+      name = "White belt">
+      <Group
+         location = "container:whilte belt/week 2"
+         name = "week 2">
+         <FileRef
+            location = "group:16. reverse/16. reverse.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:15. move strings/15. move strings.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:14. maximizer/14. maximizer.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:13. palindrom filter/13. palindrom filter.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:12. palindrom/12. palindrom.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:11. factorial/11. factorial.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
+         location = "container:whilte belt/week 1"
+         name = "week 1">
+         <FileRef
+            location = "group:1. helloworld/1. helloworld.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:2. A+B/2. A+B.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:3. min string/3. min string.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:4. equation/4. equation.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:5. division/5. division.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:6. discount/6. discount.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:7. even/7. even.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:8. second match/8. second match.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:9. max divider/9. max divider.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:10. to binary/10. to binary.xcodeproj">
+         </FileRef>
+      </Group>
+   </Group>
+</Workspace>
