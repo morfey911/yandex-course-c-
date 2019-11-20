@@ -34,16 +34,16 @@ int main(int argc, const char * argv[]) {
 
     for (int i = 0; i < commandsCount; ++i) {
         string command;
-        int n;
+        int value;
 
         cin >> command;
 
         if (command == "COME") {
-            cin >> n;
-            Come(queue, n);
+            cin >> value;
+            Come(queue, value);
         } else if (command == "WORRY" || command == "QUIET") {
-            cin >> n;
-            queue[n] = (command == "WORRY");
+            cin >> value;
+            queue[value] = (command == "WORRY");
         } else if (command == "WORRY_COUNT") {
             cout << count(begin(queue), end(queue), 1) << endl;
         }
