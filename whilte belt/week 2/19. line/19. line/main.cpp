@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -25,31 +26,13 @@ void Come(vector<int>& queue, const int count) {
     }
 }
 
-void Worry(vector<int>& queue, const int value) {
-    queue[value] = 1;
-}
-
-void Quiet(vector<int>& queue, const int value) {
-    queue[value] = 0;
-}
-
-int WorryCount(const vector<int>& queue) {
-    int result = 0;
-
-    for (auto& x : queue) {
-        result += x;
-    }
-
-    return result;
-}
-
 int main(int argc, const char * argv[]) {
-    int count;
+    int commandsCount;
     vector<int> queue;
 
-    cin >> count;
+    cin >> commandsCount;
 
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < commandsCount; ++i) {
         string command;
         int n;
 
@@ -58,14 +41,11 @@ int main(int argc, const char * argv[]) {
         if (command == "COME") {
             cin >> n;
             Come(queue, n);
-        } else if (command == "WORRY") {
+        } else if (command == "WORRY" || command == "QUIET") {
             cin >> n;
-            Worry(queue, n);
-        } else if (command == "QUIET") {
-            cin >> n;
-            Quiet(queue, n);
+            queue[n] = (command == "WORRY");
         } else if (command == "WORRY_COUNT") {
-            cout << WorryCount(queue) << endl;
+            cout << count(begin(queue), end(queue), 1) << endl;
         }
     }
 
