@@ -34,10 +34,10 @@ int main(int argc, const char * argv[]) {
         }
 
         if (route_to_number.count(stops) == 0) {
-            unsigned long nextRouteNumber = route_to_number.size() + 1;
+            unsigned long next_route_number = route_to_number.size() + 1;
 
-            cout << "New bus " << nextRouteNumber << endl;
-            route_to_number[stops] = nextRouteNumber;
+            cout << "New bus " << next_route_number << endl;
+            route_to_number[stops] = next_route_number;
         } else {
             cout << "Already exists for " << route_to_number[stops] << endl;
         }
