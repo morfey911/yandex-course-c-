@@ -8,6 +8,9 @@
          location = "container:whilte belt/week 2"
          name = "week 2">
          <FileRef
+            location = "group:28. buses - 3/28. buses - 3.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:27. synonyms/27. synonyms.xcodeproj">
          </FileRef>
          <FileRef
