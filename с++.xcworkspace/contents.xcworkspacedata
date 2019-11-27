@@ -5,6 +5,10 @@
       location = "container:whilte belt"
       name = "White belt">
       <Group
+         location = "container:whilte belt/week 3"
+         name = "week 3">
+      </Group>
+      <Group
          location = "container:whilte belt/week 2"
          name = "week 2">
          <FileRef
