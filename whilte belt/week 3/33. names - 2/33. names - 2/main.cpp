@@ -28,30 +28,25 @@ public:
         const vector<string> first_names = FindNamesHistory(first_name_to_year, year);
         const vector<string> last_names = FindNamesHistory(last_name_to_year, year);
 
-        if (first_names.empty() && last_names.empty()) {
-            return "Incognito";
-        } else if (last_names.empty()) {
-            return first_names[first_names.size() - 1] + " with unknown last name";
-        } else if (first_names.empty()) {
-            return last_names[last_names.size() - 1] + " with unknown first name";
+        string first_name;
+        string last_name;
+
+        if (!first_names.empty()) {
+            first_name = first_names.back();
         }
 
-        return first_names[first_names.size() - 1] + ' ' + last_names[last_names.size() - 1];
+        if (!last_names.empty()) {
+            last_name = last_names.back();
+        }
+
+        return BuildFullName(first_name, last_name);
     }
 
     string GetFullNameWithHistory(int year) {
         const string joined_first_name = BuildJoinedName(FindNamesHistory(first_name_to_year, year));
         const string joined_last_name = BuildJoinedName(FindNamesHistory(last_name_to_year, year));
 
-        if (joined_first_name.empty() && joined_last_name.empty()) {
-            return "Incognito";
-        } else if (joined_last_name.empty()) {
-            return joined_first_name + " with unknown last name";
-        } else if (joined_first_name.empty()) {
-            return joined_last_name + " with unknown first name";
-        }
-
-        return joined_first_name + ' ' + joined_last_name;
+        return BuildFullName(joined_first_name, joined_last_name);
     }
 
 private:
@@ -103,6 +98,18 @@ private:
         }
 
         return result;
+    }
+
+    string BuildFullName(const string& first_name, const string& last_name) {
+        if (first_name.empty() && last_name.empty()) {
+            return "Incognito";
+        } else if (first_name.empty()) {
+            return last_name + " with unknown first name";
+        } else if (last_name.empty()) {
+            return first_name + " with unknown last name";
+        }
+
+        return first_name + " " + last_name;
     }
 };
 
