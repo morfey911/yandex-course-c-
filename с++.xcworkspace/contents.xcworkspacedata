@@ -5,6 +5,13 @@
       location = "container:whilte belt"
       name = "White belt">
       <Group
+         location = "container:whilte belt/week 4"
+         name = "week 4">
+         <FileRef
+            location = "group:37. LectureTitle/37. LectureTitle.xcodeproj">
+         </FileRef>
+      </Group>
+      <Group
          location = "container:whilte belt/week 3"
          name = "week 3">
          <FileRef
