@@ -8,6 +8,12 @@
          location = "container:whilte belt/week 4"
          name = "week 4">
          <FileRef
+            location = "group:46. rational_eq_add_sub/46. rational_eq_add_sub.xcodeproj">
+         </FileRef>
+         <FileRef
+            location = "group:45. rational_interface/45. rational_interface.xcodeproj">
+         </FileRef>
+         <FileRef
             location = "group:44. students/44. students.xcodeproj">
          </FileRef>
          <FileRef
