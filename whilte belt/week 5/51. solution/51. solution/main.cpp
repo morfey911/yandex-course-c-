@@ -50,7 +50,7 @@ Date dateFromString(const string& dateString) {
     char def1, def2;
     stringstream stream(dateString);
 
-    if (stream >> y >> def1 >> m >> def2 >> d && stream.peek() == EOF) {
+    if (stream >> y >> def1 >> m >> def2 >> d && stream.peek() == EOF && def1 == '-' && def2 == '-') {
         result = Date(y, m, d);
     } else {
         throw domain_error("Wrong date format: " + dateString);
@@ -60,7 +60,7 @@ Date dateFromString(const string& dateString) {
 }
 
 bool operator < (const Date& lhs, const Date& rhs) {
-    return lhs.GetYear() < rhs.GetYear() || lhs.GetMonth() < rhs.GetMonth() || lhs.GetDay() > rhs.GetDay();
+    return lhs.GetYear() * 365 + lhs.GetMonth() * 31 + lhs.GetDay() < rhs.GetYear() * 365 + rhs.GetMonth() * 31 + rhs.GetDay();
 }
 
 ostream& operator << (ostream& stream, const Date& date) {
@@ -201,6 +201,7 @@ int main(int argc, const char * argv[]) {
             db.Print();
         } else {
             cout << "Unknown command: " << c << endl;
+            return 0;
         }
     }
 
