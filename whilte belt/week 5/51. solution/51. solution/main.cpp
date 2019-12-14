@@ -19,7 +19,7 @@ using namespace std;
 class Date {
 public:
     Date(int year = 1, int month = 1, int day = 1) {
-        if (month <= 0 || month > 12) {
+        if (month < 1 || month > 12) {
             throw domain_error("Month value is invalid: " + to_string(month));
         } else if (day < 1 || day > 31) {
             throw domain_error("Day value is invalid: " + to_string(day));
@@ -106,13 +106,11 @@ public:
     }
 
     set<string> Find(const Date& date) const {
-        set<string> result;
-
         if (db.count(date) != 0) {
-            result = db.at(date);
+            return db.at(date);
         }
 
-        return result;
+        return {};
     }
 
     void Print() const {
@@ -128,81 +126,60 @@ private:
 };
 
 int main(int argc, const char * argv[]) {
-    Database db;
+    try {
+        Database db;
 
-    string command;
+        string command;
 
-    while (getline(cin, command)) {
-        string c;
-        stringstream stream(command);
+        while (getline(cin, command)) {
+            string c;
+            stringstream stream(command);
 
-        stream >> c;
-        if (c.empty()) {
+            stream >> c;
+            if (c.empty()) {
 
-        } else if (c == "Add") {
-            Date date;
-            string d;
-            string event;
+            } else if (c == "Add") {
+                string d, event;
+                stream >> d >> event;
 
-            stream >> d >> event;
+                db.AddEvent(dateFromString(d), event);
+            } else if (c == "Del") {
+                string d;
+                stream >> d;
+                const Date& date = dateFromString(d);
 
-            try {
-                date = dateFromString(d);
-            } catch (domain_error& er) {
-                cout << er.what() << endl;
-                return 0;
-            }
-
-            db.AddEvent(date, event);
-        } else if (c == "Del") {
-            string d;
-            Date date;
-
-            stream >> d;
-
-            try {
-                date = dateFromString(d);
-            } catch (domain_error& er) {
-                cout << er.what() << endl;
-                return 0;
-            }
-
-            if (stream.peek() == EOF) {
-                int deletedDates = db.DeleteDate(date);
-                cout << "Deleted " << to_string(deletedDates) << " events" << endl;
-            } else {
-                string event;
-                stream >> event;
-
-                if (db.DeleteEvent(date, event)) {
-                    cout << "Deleted successfully" << endl;
+                if (stream.peek() == EOF) {
+                    int deletedDates = db.DeleteDate(date);
+                    cout << "Deleted " << to_string(deletedDates) << " events" << endl;
                 } else {
-                    cout << "Event not found" << endl;
+                    string event;
+                    stream >> event;
+
+                    if (db.DeleteEvent(date, event)) {
+                        cout << "Deleted successfully" << endl;
+                    } else {
+                        cout << "Event not found" << endl;
+                    }
                 }
-            }
-        } else if (c == "Find") {
-            string d;
-            Date date;
+            } else if (c == "Find") {
+                string d;
+                stream >> d;
+                const Date& date = dateFromString(d);
+                set<string> events = db.Find(date);
 
-            stream >> d;
-
-            try {
-                date = dateFromString(d);
-            } catch (domain_error& er) {
-                cout << er.what() << endl;
+                for (const string& event : events) {
+                    cout << event << endl;
+                }
+            } else if (c == "Print") {
+                db.Print();
+            } else {
+                cout << "Unknown command: " << c << endl;
                 return 0;
             }
-
-            set<string> events = db.Find(date);
-            for (const string& event : events) {
-                cout << event << endl;
-            }
-        } else if (c == "Print") {
-            db.Print();
-        } else {
-            cout << "Unknown command: " << c << endl;
-            return 0;
         }
+    } catch (domain_error& er) {
+        cout << er.what() << endl;
+        return 0;
     }
 
     return 0;
