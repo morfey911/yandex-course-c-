@@ -51,13 +51,9 @@ Date dateFromString(const string& dateString) {
     stringstream stream(dateString);
 
     if (stream >> y >> def1 >> m >> def2 >> d && stream.peek() == EOF) {
-        try {
-            result = Date(y, m, d);
-        } catch (domain_error& er) {
-            cout << er.what() << endl;
-        }
+        result = Date(y, m, d);
     } else {
-        cout << "Wrong date format: " << dateString << endl;
+        throw domain_error("Wrong date format: " + dateString);
     }
 
     return result;
@@ -96,14 +92,17 @@ public:
     }
 
     int DeleteDate(const Date& date) {
-        unsigned long result = 0;
+        int result = 0;
 
-        if (db.count(date) == 1) {
-            result = db[date].size();
-            db.erase(date);
+        try {
+            result = db.at(date).size();
+        } catch (out_of_range &) {
+            return 0;
         }
 
-        return (int)result;
+        db.erase(date);
+
+        return result;
     }
 
     set<string> Find(const Date& date) const {
@@ -141,24 +140,41 @@ int main(int argc, const char * argv[]) {
         if (c.empty()) {
 
         } else if (c == "Add") {
+            Date date;
             string d;
             string event;
 
             stream >> d >> event;
-            db.AddEvent(dateFromString(d), event);
+
+            try {
+                date = dateFromString(d);
+            } catch (domain_error& er) {
+                cout << er.what() << endl;
+                return 0;
+            }
+
+            db.AddEvent(date, event);
         } else if (c == "Del") {
             string d;
+            Date date;
 
             stream >> d;
 
+            try {
+                date = dateFromString(d);
+            } catch (domain_error& er) {
+                cout << er.what() << endl;
+                return 0;
+            }
+
             if (stream.peek() == EOF) {
-                int deletedDates = db.DeleteDate(dateFromString(d));
+                int deletedDates = db.DeleteDate(date);
                 cout << "Deleted " << to_string(deletedDates) << " events" << endl;
             } else {
                 string event;
                 stream >> event;
 
-                if (db.DeleteEvent(dateFromString(d), event)) {
+                if (db.DeleteEvent(date, event)) {
                     cout << "Deleted successfully" << endl;
                 } else {
                     cout << "Event not found" << endl;
@@ -166,10 +182,18 @@ int main(int argc, const char * argv[]) {
             }
         } else if (c == "Find") {
             string d;
+            Date date;
 
             stream >> d;
 
-            set<string> events = db.Find(dateFromString(d));
+            try {
+                date = dateFromString(d);
+            } catch (domain_error& er) {
+                cout << er.what() << endl;
+                return 0;
+            }
+
+            set<string> events = db.Find(date);
             for (const string& event : events) {
                 cout << event << endl;
             }
