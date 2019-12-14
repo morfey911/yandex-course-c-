@@ -18,8 +18,8 @@ using namespace std;
 
 class Date {
 public:
-    Date(int year = 1900, int month = 1, int day = 1) {
-        if (month < 0 || month > 12) {
+    Date(int year = 1, int month = 1, int day = 1) {
+        if (month <= 0 || month > 12) {
             throw domain_error("Month value is invalid: " + to_string(month));
         } else if (day < 1 || day > 31) {
             throw domain_error("Day value is invalid: " + to_string(day));
@@ -44,6 +44,25 @@ private:
     int day, month, year;
 };
 
+Date dateFromString(const string& dateString) {
+    Date result;
+    int y, m, d;
+    char def1, def2;
+    stringstream stream(dateString);
+
+    if (stream >> y >> def1 >> m >> def2 >> d && stream.peek() == EOF) {
+        try {
+            result = Date(y, m, d);
+        } catch (domain_error& er) {
+            cout << er.what() << endl;
+        }
+    } else {
+        cout << "Wrong date format: " << dateString << endl;
+    }
+
+    return result;
+}
+
 bool operator < (const Date& lhs, const Date& rhs) {
     return lhs.GetYear() < rhs.GetYear() || lhs.GetMonth() < rhs.GetMonth() || lhs.GetDay() > rhs.GetDay();
 }
@@ -53,25 +72,6 @@ ostream& operator << (ostream& stream, const Date& date) {
            << setw(4) << date.GetYear() << "-"
            << setw(2) << date.GetMonth() << "-"
            << setw(2) << date.GetDay();
-    return stream;
-}
-
-istream& operator >> (istream& stream, Date& date) {
-    if (stream.peek() == EOF) {
-        return stream;
-    }
-
-    int y, m, d;
-    char def1, def2;
-
-    stream >> y >> def1 >> m >> def2 >> d;
-
-    try {
-        date = Date(y, m, d);
-    } catch ( domain_error& er) {
-        cout << er.what() << endl;
-    }
-
     return stream;
 }
 
@@ -117,11 +117,6 @@ public:
     }
 
     void Print() const {
-        map<Date, set<string>> dbCopy = this->db;
-        sort(db.begin(), db.end(), [](const Date& lhs, const Date& rhs) {
-            return lhs < rhs;
-        });
-
         for (const auto& [date, events] : db) {
             for (const auto& event : events) {
                 cout << date << " " << event << endl;
@@ -143,37 +138,38 @@ int main(int argc, const char * argv[]) {
         stringstream stream(command);
 
         stream >> c;
+        if (c.empty()) {
 
-        if (c == "Add") {
-            Date date;
+        } else if (c == "Add") {
+            string d;
             string event;
 
-            stream >> date >> event;
-            db.AddEvent(date, event);
+            stream >> d >> event;
+            db.AddEvent(dateFromString(d), event);
         } else if (c == "Del") {
-            Date date;
+            string d;
 
-            stream >> date;
+            stream >> d;
 
             if (stream.peek() == EOF) {
-                int deletedDates = db.DeleteDate(date);
+                int deletedDates = db.DeleteDate(dateFromString(d));
                 cout << "Deleted " << to_string(deletedDates) << " events" << endl;
             } else {
                 string event;
                 stream >> event;
 
-                if (db.DeleteEvent(date, event)) {
+                if (db.DeleteEvent(dateFromString(d), event)) {
                     cout << "Deleted successfully" << endl;
                 } else {
                     cout << "Event not found" << endl;
                 }
             }
         } else if (c == "Find") {
-            Date date;
+            string d;
 
-            stream >> date;
+            stream >> d;
 
-            set<string> events = db.Find(date);
+            set<string> events = db.Find(dateFromString(d));
             for (const string& event : events) {
                 cout << event << endl;
             }
